@@ -137,13 +137,13 @@ const App: React.FC = () => {
   if (!isApiKeySelected) {
     return (
       <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-        <div className="text-center p-8 bg-gray-800 rounded-lg shadow-lg">
+        <div className="text-center p-8 bg-gray-800 shadow-lg">
           <h1 className="text-2xl font-bold mb-4">API Key Required</h1>
           <p className="mb-6 text-gray-300">Please select your Gemini API key to use this application.</p>
           <p className="text-xs text-gray-400 mb-4">Video generation with Veo requires a project with billing enabled. <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Learn more</a>.</p>
           <button
             onClick={handleSelectApiKey}
-            className="bg-cyan-600 text-white font-bold py-2 px-6 rounded-md hover:bg-cyan-700 transition-colors"
+            className="bg-cyan-600 text-white font-bold py-2 px-6 hover:bg-cyan-700 transition-colors"
           >
             Select API Key
           </button>
@@ -162,7 +162,7 @@ const App: React.FC = () => {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         {error && (
-          <div className="bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+          <div className="bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 relative mb-6" role="alert">
             <strong className="font-bold">Error: </strong>
             <span className="block sm:inline">{error}</span>
             <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setError(null)}>
@@ -184,23 +184,28 @@ const App: React.FC = () => {
               setEndImageFile={setEndImageFile}
               onGenerateImage={handleGenerateImage}
               onGenerateVideo={handleGenerateVideo}
+              onGenerateSuggestions={handleGenerateSuggestions}
               isLoading={isLoading}
             />
           </div>
-          <div className="lg:col-span-2 space-y-6">
-            <SuggestionsPanel
-              suggestions={suggestions}
-              onUpdateSuggestion={handleUpdateSuggestion}
-              onGenerateSuggestions={handleGenerateSuggestions}
-              isLoading={isLoading && suggestions.length === 0}
-              prompt={prompt}
-            />
-            <div className="h-[600px]">
-              <Preview
-                generatedContent={generatedContent}
-                isLoading={isLoading && generatedContent.length === 0}
-                platform={selectedPlatform}
-              />
+          <div className="lg:col-span-2">
+            <div className="bg-gray-800/50 p-6 border border-gray-700/50 space-y-6">
+                <SuggestionsPanel
+                  suggestions={suggestions}
+                  onUpdateSuggestion={handleUpdateSuggestion}
+                  isLoading={isLoading && suggestions.length === 0}
+                />
+                
+                <div>
+                    <h3 className="font-bold text-lg text-white">Generated Content</h3>
+                    <div className="mt-4 h-[600px]">
+                      <Preview
+                        generatedContent={generatedContent}
+                        isLoading={isLoading && generatedContent.length === 0}
+                        platform={selectedPlatform}
+                      />
+                    </div>
+                </div>
             </div>
           </div>
         </div>

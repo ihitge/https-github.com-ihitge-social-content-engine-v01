@@ -16,7 +16,7 @@ interface PreviewProps {
 
 const EmptyState: React.FC = () => (
     <div className="flex flex-col items-center justify-center h-full text-center text-gray-500">
-        <div className="w-16 h-16 mb-4 border-2 border-dashed border-gray-600 rounded-lg"></div>
+        <div className="w-16 h-16 mb-4 border-2 border-dashed border-gray-600"></div>
         <h3 className="text-lg font-semibold text-gray-400">Your Content Will Appear Here</h3>
         <p className="text-sm">Use the controls on the left to generate an image or video.</p>
     </div>
@@ -46,7 +46,7 @@ const ContentCard: React.FC<{ content: GeneratedContent }> = ({ content }) => {
     };
 
     return (
-        <div className="group relative rounded-lg overflow-hidden bg-gray-800 border border-gray-700">
+        <div className="group relative overflow-hidden bg-gray-800 border border-gray-700">
             {content.type === 'image' ? (
                 <img src={content.url} alt={content.prompt} className="w-full h-full object-cover" />
             ) : (
@@ -58,8 +58,8 @@ const ContentCard: React.FC<{ content: GeneratedContent }> = ({ content }) => {
                     <p className="text-xs mt-1">{content.keyMessages.replace(/\\n/g, '\n')}</p>
                 </div>
                 <div className="flex justify-between items-end">
-                    <span className="text-xs font-semibold bg-cyan-500/80 px-2 py-1 rounded">{content.cta}</span>
-                    <button onClick={downloadFile} className="p-2 rounded-full bg-white/20 hover:bg-white/40 transition-colors">
+                    <span className="text-xs font-semibold bg-cyan-500/80 px-2 py-1">{content.cta}</span>
+                    <button onClick={downloadFile} className="p-2 bg-white/20 hover:bg-white/40 transition-colors">
                         <DownloadIcon className="w-5 h-5" />
                     </button>
                 </div>
@@ -76,7 +76,7 @@ export const Preview: React.FC<PreviewProps> = ({ generatedContent, isLoading, p
     }
 
     return (
-        <div className="bg-gray-900 p-4 rounded-lg h-full overflow-y-auto">
+        <div className="bg-gray-900 p-4 h-full overflow-y-auto">
             {isLoading ? (
                 <LoadingState />
             ) : generatedContent.length === 0 ? (
