@@ -1,112 +1,70 @@
 # Social Media Content Factory - User Guide
 
-Welcome to the Social Media Content Factory! This guide will walk you through how to use this powerful AI tool to generate stunning, campaign-ready images and videos for all your social media platforms.
+Welcome to the AI Social Media Ad Generator! This guide will walk you through creating compelling, platform-native ads in just a few clicks.
 
 ## Table of Contents
-1.  [Introduction](#introduction)
-2.  [The Main Interface](#the-main-interface)
-3.  [Generating Your First Piece of Content](#generating-your-first-piece-of-content)
-    *   [Step 1: Choose Your Content Type](#step-1-choose-your-content-type)
-    *   [Step 2: Select a Platform](#step-2-select-a-platform)
-    *   [Step 3: Provide Your Creative Input](#step-3-provide-your-creative-input)
-    *   [Step 4 (Video Only): Add Optional Assets](#step-4-video-only-add-optional-assets)
-    *   [Step 5: Generate!](#step-5-generate)
-4.  [Video Generation & API Keys](#video-generation--api-keys)
-5.  [Previewing, Captioning, and Downloading](#previewing-captioning-and-downloading)
-6.  [Streamline Your Workflow: The Suggestions Panel](#streamline-your-workflow-the-suggestions-panel)
-7.  [Troubleshooting](#troubleshooting)
+1.  [Getting Started: Your First Ad](#getting-started-your-first-ad)
+2.  [The Workflow: A Step-by-Step Guide](#the-workflow-a-step-by-step-guide)
+    *   [Step 1: Write a Visual Prompt](#step-1-write-a-visual-prompt)
+    *   [Step 2: Choose Your Platform](#step-2-choose-your-platform)
+    *   [Step 3: Generate and Edit Creative Suggestions](#step-3-generate-and-edit-creative-suggestions)
+    *   [Step 4: Generate Your Content](#step-4-generate-your-content)
+3.  [Feature Deep Dive](#feature-deep-dive)
+    *   [Creative Suggestions](#creative-suggestions)
+    *   [Video Generation Controls](#video-generation-controls)
+4.  [Best Practices](#best-practices)
 
 ---
 
-### Introduction
+## Getting Started: Your First Ad
 
-The Social Media Content Factory is designed to accelerate your creative process. Using powerful AI models like Imagen and Veo, you can turn a simple text prompt into high-quality, perfectly formatted content for platforms like TikTok, YouTube Shorts, Instagram, and more.
+For your first time, you'll be prompted to select a **Gemini API Key**. This is required for the app to generate content. If you need to generate a video, ensure your selected key is associated with a project that has billing enabled.
 
-**Key Features:**
-*   **Image & Video Generation:** Create both static images and dynamic short-form videos.
-*   **Automated Text Overlays:** Instantly add headlines, key messages, and calls to action to your visuals, making them ready for "sound-off" viewing.
-*   **Platform-Aware:** Automatically uses the correct aspect ratio for your chosen social media platform.
-*   **Flexible Creation:** Generate from a text prompt, or guide the AI with starting and ending images for videos.
-*   **Scale Your Campaigns:** Quickly repurpose a successful creative idea for all your other platforms with a single click.
+Once your key is selected, you're ready to create!
 
-### The Main Interface
+## The Workflow: A Step-by-Step Guide
 
-The application is divided into three main sections:
+Creating a great ad is a simple 4-step process.
 
-1.  **Controls Panel (Left):** This is where you define what you want to create. You'll select the content type, platform, write your visual prompt and text overlays, and upload any optional image assets here.
-2.  **Preview Panel (Center):** Your generated content will appear here. This area shows loading status, errors, and the final image or video. A download button and other actions will appear below it.
-3.  **Suggestions Panel (Right):** This panel helps you scale your content. After you create something you like, this area will suggest creating variations for other platforms.
+### Step 1: Write a Visual Prompt
 
-### Generating Your First Piece of Content
+In the **Visual Prompt** box, describe the image or video you want the AI to create. Be descriptive!
 
-Follow these simple steps to bring your ideas to life.
+*   **Good:** `A golden retriever puppy wearing tiny glasses, sitting in a library, looking at the camera.`
+*   **Needs Improvement:** `dog`
 
-#### Step 1: Choose Your Content Type
-In the **Controls Panel**, select either `Image` or `Video`.
--   **Image:** Generates a static picture. Text overlays will be "baked into" the final image. This is very fast.
--   **Video:** Generates a short video clip. Text is provided as captions you can copy and paste into your social media post. This process can take several minutes.
+### Step 2: Choose Your Platform
 
-#### Step 2: Select a Platform
-Choose the social media platform you're creating for (e.g., `TikTok`, `Instagram Post`). The app automatically sets the correct aspect ratio (e.g., 9:16 for TikTok, 1:1 for Instagram Post).
+Select the social media platform you're creating the ad for (e.g., TikTok, Instagram Post). The app will automatically use the correct aspect ratio for your chosen platform.
 
-#### Step 3: Provide Your Creative Input
-This is the most important step! Fill in the fields to describe the visual and the text you want to add.
+### Step 3: Generate and Edit Creative Suggestions
 
-*   **Visual Prompt:** Describe what you want the AI to create visually. Be as descriptive as possible for the best results.
-    *   *Example: A majestic golden eagle soaring through a dramatic, stormy sky, hyperrealistic, cinematic lighting.*
-*   **Hook (Headline):** The main headline that grabs attention in the first 3 seconds.
-    *   *Example: The Future is Now*
-*   **Key Messages (Body):** 1-2 short, impactful points. You can put each message on a new line.
-    *   *Example: Skate with AI\nAvailable Tomorrow*
-*   **Call to Action (CTA):** What you want the viewer to do next.
-    *   *Example: Shop Now*
+Click the **"New Ideas"** button. The AI will generate three complete ad concepts for you, each with:
+*   **Hook:** A catchy headline to grab attention.
+*   **Key Messages:** The main body text of your ad.
+*   **CTA (Call to Action):** What you want the user to do (e.g., "Shop Now," "Learn More").
 
-#### Step 4 (Video Only): Add Optional Assets
-If you selected `Video`, you have the option to upload a **Start Image** and an **End Image**.
--   **Start Image:** The video will begin by animating from this image.
--   **End Image:** The video will transition to end on this image.
--   **Both:** The video will animate from the start image to the end image.
+**Important:** You can, and should, **edit this text directly** in the suggestion cards to perfectly match your brand's voice. Click on any text to change it.
 
-This is a powerful way to have more control over the video's narrative.
+### Step 4: Generate Your Content
 
-#### Step 5: Generate!
-Click the **Generate Content** button. The button will show a loading spinner, and the Preview Panel will display progress messages. Be patient, especially for video generation!
+Click **"Generate Image"** or **"Generate Video"**.
 
-### Video Generation & API Keys
+The app will generate one piece of media (an image or a video) and create versions of it paired with the text from *each of the three* suggestion cards. This gives you multiple ad variations to test instantly!
 
-Generating videos with the Veo model requires an API key.
--   The first time you click "Generate Content" for a **video**, a dialog will appear prompting you to select your Google AI Studio API key.
--   Once selected, the generation will proceed automatically.
--   The app will remember your selection for future video generations. If you encounter an error related to an invalid key, you may be prompted to select a new one.
+The results will appear in the main content area. You can hover over each one to see the text overlays and click the download icon.
 
-### Previewing, Captioning, and Downloading
+## Feature Deep Dive
 
-Once the generation is complete, your content will appear in the **Preview Panel**.
+### Creative Suggestions
+This panel is your AI marketing assistant. Use the "New Ideas" button to brainstorm, then refine the text in the cards to get it just right. The generated content will always use the three suggestions currently displayed and edited by you.
 
-*   **For Images:** The text you provided for the Hook, Key Messages, and CTA will be automatically drawn onto the image with a semi-transparent background for readability.
-*   **For Videos:** The video will appear without baked-in text. Below the video player, your Hook, Messages, and CTA will be displayed as captions. Use the **Copy Captions** button to easily copy all the text to your clipboard, ready to be pasted into your TikTok or Instagram post description.
+### Video Generation Controls
+You can optionally provide a **Start Image** and/or an **End Image** for video generation. This gives you more control over the final video, allowing you to create "Midjourney-style" transformations.
 
-Below the preview, a green **Download Content** button will appear. Click it to save the file (`.jpg` for images, `.mp4` for videos) to your computer.
-
-### Streamline Your Workflow: The Suggestions Panel
-
-This feature is designed for creating multi-platform campaigns efficiently.
-
-After you've successfully generated a piece of content you're happy with, look at the **Suggestions Panel** on the right. It will populate with buttons for all the *other* platforms.
-
-Simply click one of these buttons (e.g., `Generate for YouTube Shorts`), and the app will automatically re-run your original visual prompt and text overlays using the correct aspect ratio for that new platform.
-
-### Troubleshooting
-
--   **Error: "Please enter a visual prompt."**
-    -   You must write a description in the "Visual Prompt" box before generating.
-
--   **Error (Video): "Your API key is invalid or not found."**
-    -   The API key you selected is no longer valid or has been revoked. The app will reset, allowing you to click "Generate Content" again and trigger the key selection dialog. Please choose a valid key.
-
--   **General Generation Failure:**
-    -   Sometimes, the AI may fail to generate content from a specific prompt. Try rephrasing your prompt or being more/less specific.
-
----
+## Best Practices
+*   **Be Specific:** The more detail you give in your prompt, the better the visual output.
+*   **Brainstorm and Refine:** Use the AI to generate ideas, but use your expertise to refine the final copy in the suggestion cards.
+*   **Test Everything:** Use the generated variations to run A/B tests on your chosen platform. Test different hooks, messages, and visuals to see what drives the best results.
 
 Happy creating!
