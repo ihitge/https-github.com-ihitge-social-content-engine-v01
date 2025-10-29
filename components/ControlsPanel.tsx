@@ -37,7 +37,7 @@ const FileInput: React.FC<{
           className="hidden"
           disabled={disabled}
         />
-        <label htmlFor={id} className={`flex-grow text-center text-sm px-3 py-2 border border-gray-600 cursor-pointer transition-colors ${disabled ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'}`}>
+        <label htmlFor={id} className={`flex-grow text-center text-sm px-3 py-2 border border-[#0FF4C6] cursor-pointer transition-colors ${disabled ? 'bg-[#1e1e1e] text-gray-500 cursor-not-allowed' : 'bg-[#252525] hover:bg-[#333333] text-gray-300'}`}>
           {file ? file.name : 'Choose file...'}
         </label>
         {file && (
@@ -67,7 +67,7 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="bg-gray-800/50 p-6 border border-gray-700/50 space-y-6">
+    <div className="bg-[#252525]/50 p-6 border border-[#0FF4C6]/50 space-y-6">
       {/* --- Section 1: Creative Input --- */}
       <div>
         <label htmlFor="prompt" className="block text-sm font-bold text-white mb-2">
@@ -79,7 +79,7 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="e.g., A futuristic sports car speeding through a neon-lit city at night"
           rows={4}
-          className="w-full bg-gray-900 text-white border-gray-700 p-2 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
+          className="w-full bg-[#030E0F] text-white border-[#0FF4C6] p-2 focus:ring-2 focus:ring-[#0FF4C6] focus:border-[#0FF4C6] transition"
           disabled={isLoading}
         />
       </div>
@@ -94,8 +94,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
               disabled={isLoading}
               className={`flex flex-col items-center justify-center p-2 transition-all duration-200 border-2 ${
                 selectedPlatform.id === platform.id
-                  ? 'bg-cyan-500/20 border-cyan-500'
-                  : 'bg-gray-700/50 border-transparent hover:border-gray-500'
+                  ? 'bg-[#0FF4C6]/20 border-[#0FF4C6]'
+                  : 'bg-[#1e1e1e]/50 border-transparent hover:border-[#0FF4C6]'
               }`}
             >
               <platform.icon className="w-5 h-5 mb-1 text-white" />
@@ -108,13 +108,13 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
       <button
         onClick={onGenerateSuggestions}
         disabled={isLoading || !prompt}
-        className="w-full bg-gray-700 text-cyan-300 font-semibold py-2 px-4 hover:bg-gray-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-[#333333] text-[#0FF4C6] font-semibold py-2 px-4 hover:bg-[#404040] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         3. Generate Test Ideas
       </button>
       
       {/* --- Section 2: Final Generation --- */}
-      <div className="space-y-6 pt-6 border-t border-gray-700/50">
+      <div className="space-y-6 pt-6 border-t border-[#0FF4C6]/50">
         <div className="space-y-4">
             <p className="text-sm font-bold text-white">4. Video Controls (Optional)</p>
             <FileInput label="Start Image" file={startImageFile} setFile={setStartImageFile} disabled={isLoading} />
@@ -125,14 +125,14 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
           <button
             onClick={onGenerateImage}
             disabled={isLoading || !prompt}
-            className="bg-cyan-600 text-white font-bold py-2 px-4 hover:bg-cyan-700 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed"
+            className="bg-[#0da594] text-white font-bold py-2 px-4 hover:bg-[#0b8f7e] transition-colors disabled:bg-[#333333] disabled:cursor-not-allowed"
           >
             Generate Image
           </button>
           <button
             onClick={onGenerateVideo}
             disabled={isLoading || !prompt}
-            className="bg-indigo-600 text-white font-bold py-2 px-4 hover:bg-indigo-700 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed"
+            className="bg-indigo-600 text-white font-bold py-2 px-4 hover:bg-indigo-700 transition-colors disabled:bg-[#333333] disabled:cursor-not-allowed"
           >
             Generate Video
           </button>

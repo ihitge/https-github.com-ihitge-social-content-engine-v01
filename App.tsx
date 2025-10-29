@@ -136,14 +136,14 @@ const App: React.FC = () => {
 
   if (!isApiKeySelected) {
     return (
-      <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-        <div className="text-center p-8 bg-gray-800 shadow-lg">
+      <div className="bg-[#030E0F] text-white min-h-screen flex items-center justify-center">
+        <div className="text-center p-8 bg-[#252525] shadow-lg">
           <h1 className="text-2xl font-bold mb-4">API Key Required</h1>
           <p className="mb-6 text-gray-300">Please select your Gemini API key to use this application.</p>
-          <p className="text-xs text-gray-400 mb-4">Video generation with Veo requires a project with billing enabled. <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Learn more</a>.</p>
+          <p className="text-xs text-gray-400 mb-4">Video generation with Veo requires a project with billing enabled. <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-[#0FF4C6] hover:underline">Learn more</a>.</p>
           <button
             onClick={handleSelectApiKey}
-            className="bg-cyan-600 text-white font-bold py-2 px-6 hover:bg-cyan-700 transition-colors"
+            className="bg-[#0da594] text-white font-bold py-2 px-6 hover:bg-[#0b8f7e] transition-colors"
           >
             Select API Key
           </button>
@@ -154,8 +154,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen font-sans">
-      <header className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-10">
+    <div className="bg-[#030E0F] text-white min-h-screen font-sans">
+      <header className="bg-[#030E0F]/80 backdrop-blur-sm border-b border-[#0FF4C6]/50 sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <h1 className="text-xl font-bold tracking-tight">AI Social Media Ad Generator</h1>
         </div>
@@ -189,7 +189,7 @@ const App: React.FC = () => {
             />
           </div>
           <div className="lg:col-span-2">
-            <div className="bg-gray-800/50 p-6 border border-gray-700/50 space-y-6">
+            <div className="bg-[#252525]/50 p-6 border border-[#0FF4C6]/50 space-y-6">
                 <SuggestionsPanel
                   suggestions={suggestions}
                   onUpdateSuggestion={handleUpdateSuggestion}

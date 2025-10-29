@@ -16,7 +16,7 @@ interface PreviewProps {
 
 const EmptyState: React.FC = () => (
     <div className="flex flex-col items-center justify-center h-full text-center text-gray-500">
-        <div className="w-16 h-16 mb-4 border-2 border-dashed border-gray-600"></div>
+        <div className="w-16 h-16 mb-4 border-2 border-dashed border-[#0FF4C6]"></div>
         <h3 className="text-lg font-semibold text-gray-400">Your Content Will Appear Here</h3>
         <p className="text-sm">Use the controls on the left to generate an image or video.</p>
     </div>
@@ -24,7 +24,7 @@ const EmptyState: React.FC = () => (
 
 const LoadingState: React.FC = () => (
     <div className="flex flex-col items-center justify-center h-full text-center text-gray-400">
-        <svg className="animate-spin h-10 w-10 text-cyan-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg className="animate-spin h-10 w-10 text-[#0FF4C6] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
@@ -46,7 +46,7 @@ const ContentCard: React.FC<{ content: GeneratedContent }> = ({ content }) => {
     };
 
     return (
-        <div className="group relative overflow-hidden bg-gray-800 border border-gray-700">
+        <div className="group relative overflow-hidden bg-[#252525] border border-[#0FF4C6]">
             {content.type === 'image' ? (
                 <img src={content.url} alt={content.prompt} className="w-full h-full object-cover" />
             ) : (
@@ -58,7 +58,7 @@ const ContentCard: React.FC<{ content: GeneratedContent }> = ({ content }) => {
                     <p className="text-xs mt-1">{content.keyMessages.replace(/\\n/g, '\n')}</p>
                 </div>
                 <div className="flex justify-between items-end">
-                    <span className="text-xs font-semibold bg-cyan-500/80 px-2 py-1">{content.cta}</span>
+                    <span className="text-xs font-semibold bg-[#0FF4C6]/80 px-2 py-1">{content.cta}</span>
                     <button onClick={downloadFile} className="p-2 bg-white/20 hover:bg-white/40 transition-colors">
                         <DownloadIcon className="w-5 h-5" />
                     </button>
@@ -76,7 +76,7 @@ export const Preview: React.FC<PreviewProps> = ({ generatedContent, isLoading, p
     }
 
     return (
-        <div className="bg-gray-900 p-4 h-full overflow-y-auto">
+        <div className="bg-[#121212] p-4 h-full overflow-y-auto">
             {isLoading ? (
                 <LoadingState />
             ) : generatedContent.length === 0 ? (
