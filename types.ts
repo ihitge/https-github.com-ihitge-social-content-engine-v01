@@ -8,6 +8,8 @@ export interface Platform {
   resolution: '1080p' | '720p';
 }
 
+export type AdStyle = 'polished' | 'native_tiktok' | 'ugc_testimonial';
+
 export interface Suggestion {
   hook: string;
   keyMessages: string;

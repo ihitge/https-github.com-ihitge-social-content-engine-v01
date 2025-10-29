@@ -4,10 +4,10 @@ import { ControlsPanel } from './components/ControlsPanel';
 import { Preview } from './components/Preview';
 import { SuggestionsPanel } from './components/SuggestionsPanel';
 import { PLATFORMS } from './constants';
-import type { Platform, Suggestion, GeneratedContent } from './types';
+import type { Platform, Suggestion, GeneratedContent, AdStyle } from './types';
 import * as geminiService from './services/geminiService';
+import { applyTextAndStyleToImage } from './utils/fileUtils';
 
-// Fix: To resolve TypeScript errors related to duplicate declarations of 'aistudio', the `AIStudio` interface has been moved inside the `declare global` block. This ensures it correctly augments the global scope and avoids conflicts.
 declare global {
   interface AIStudio {
     hasSelectedApiKey: () => Promise<boolean>;
@@ -15,7 +15,6 @@ declare global {
   }
 
   interface Window {
-    // Fix: Made 'aistudio' optional to resolve a TypeScript declaration conflict. This aligns the type with its runtime usage, where its existence is checked before use.
     aistudio?: AIStudio;
   }
 }
@@ -23,6 +22,7 @@ declare global {
 const App: React.FC = () => {
   const [prompt, setPrompt] = useState<string>('');
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>(PLATFORMS[0]);
+  const [adStyle, setAdStyle] = useState<AdStyle>('polished');
   const [startImageFile, setStartImageFile] = useState<File | null>(null);
   const [endImageFile, setEndImageFile] = useState<File | null>(null);
 
@@ -46,7 +46,6 @@ const App: React.FC = () => {
   const handleSelectApiKey = async () => {
     if (window.aistudio) {
       await window.aistudio.openSelectKey();
-      // Assume success to avoid race condition and allow immediate generation attempt.
       setIsApiKeySelected(true);
     }
   };
@@ -55,7 +54,6 @@ const App: React.FC = () => {
     const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
     console.error(e);
     setError(errorMessage);
-    // If the error indicates a missing API key, prompt user to select one again.
     if (errorMessage.includes('Requested entity was not found.')) {
         setIsApiKeySelected(false);
         setError("Your API key is invalid. Please select a valid key to continue.");
@@ -76,26 +74,58 @@ const App: React.FC = () => {
     }
   };
   
-  const generateAndDisplayContent = async (
-    generator: (prompt: string, platform: Platform, startImg: File | null, endImg: File | null) => Promise<string>,
-    type: 'image' | 'video'
-  ) => {
+  const handleGenerateImage = async () => {
     if (!prompt || suggestions.length === 0) {
+        setError("Please generate and choose a suggestion first.");
+        return;
+    }
+    setIsLoading(true);
+    setError(null);
+    setGeneratedContent([]);
+
+    try {
+        // 1. Generate the base visual
+        const baseImageUrl = await geminiService.generateImage(prompt, selectedPlatform);
+
+        // 2. Apply text and style for each suggestion
+        const processedContentPromises = suggestions.map((suggestion, index) => 
+            applyTextAndStyleToImage(baseImageUrl, suggestion, adStyle, selectedPlatform).then(finishedUrl => ({
+                id: `image-${Date.now()}-${index}`,
+                url: finishedUrl,
+                type: 'image' as const,
+                prompt: prompt,
+                platform: selectedPlatform,
+                ...suggestion,
+            }))
+        );
+        
+        const newContent = await Promise.all(processedContentPromises);
+        setGeneratedContent(newContent);
+
+    } catch (e) {
+        handleApiError(e);
+    } finally {
+        setIsLoading(false);
+    }
+  };
+  
+  const handleGenerateVideo = async () => {
+     if (!prompt || suggestions.length === 0) {
       setError("Please generate and choose a suggestion first.");
       return;
     }
     setIsLoading(true);
     setError(null);
-    setGeneratedContent([]); // Clear previous content
+    setGeneratedContent([]);
 
     try {
-      // Use a single generated media URL for all suggestion cards.
-      const contentUrl = await generator(prompt, selectedPlatform, startImageFile, endImageFile);
+      // For video, we generate one and apply the suggestions virtually
+      const contentUrl = await geminiService.generateVideo(prompt, selectedPlatform, startImageFile, endImageFile);
       
       const newContent: GeneratedContent[] = suggestions.map((suggestion, index) => ({
-        id: `${type}-${Date.now()}-${index}`,
+        id: `video-${Date.now()}-${index}`,
         url: contentUrl,
-        type: type,
+        type: 'video',
         prompt: prompt,
         platform: selectedPlatform,
         ...suggestion,
@@ -107,20 +137,6 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGenerateImage = () => {
-    generateAndDisplayContent(
-        (p, pf) => geminiService.generateImage(p, pf),
-        'image'
-    );
-  };
-  
-  const handleGenerateVideo = () => {
-     generateAndDisplayContent(
-        (p, pf, start, end) => geminiService.generateVideo(p, pf, start, end),
-        'video'
-    );
   };
   
   const handleUpdateSuggestion = (indexToUpdate: number, field: keyof Suggestion, value: string) => {
@@ -178,6 +194,8 @@ const App: React.FC = () => {
               setPrompt={setPrompt}
               selectedPlatform={selectedPlatform}
               setSelectedPlatform={setSelectedPlatform}
+              adStyle={adStyle}
+              setAdStyle={setAdStyle}
               startImageFile={startImageFile}
               setStartImageFile={setStartImageFile}
               endImageFile={endImageFile}

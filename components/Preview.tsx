@@ -52,17 +52,22 @@ const ContentCard: React.FC<{ content: GeneratedContent }> = ({ content }) => {
             ) : (
                 <video src={content.url} controls autoPlay loop muted className="w-full h-full object-cover" />
             )}
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 text-white">
-                <div>
-                    <h4 className="font-bold text-sm">{content.hook}</h4>
-                    <p className="text-xs mt-1">{content.keyMessages.replace(/\\n/g, '\n')}</p>
-                </div>
-                <div className="flex justify-between items-end">
-                    <span className="text-xs font-semibold bg-[#0FF4C6]/80 px-2 py-1">{content.cta}</span>
-                    <button onClick={downloadFile} className="p-2 bg-white/20 hover:bg-white/40 transition-colors">
-                        <DownloadIcon className="w-5 h-5" />
-                    </button>
-                </div>
+            <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                {/* For images, text is burned in. For videos, show on hover. */}
+                {content.type === 'video' && (
+                    <div className="text-white">
+                        <h4 className="font-bold text-sm">{content.hook}</h4>
+                        <p className="text-xs mt-1 whitespace-pre-wrap">{content.keyMessages.replace(/\\n/g, '\n')}</p>
+                        <span className="text-xs font-semibold bg-[#0FF4C6]/80 px-2 py-1 mt-2 inline-block text-black">{content.cta}</span>
+                    </div>
+                )}
+                 <button 
+                    onClick={downloadFile} 
+                    className="absolute top-2 right-2 p-2 bg-white/20 hover:bg-white/40 transition-colors"
+                    aria-label="Download content"
+                >
+                    <DownloadIcon className="w-5 h-5 text-white" />
+                </button>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Platform } from '../types';
+import type { Platform, AdStyle } from '../types';
 import { PLATFORMS } from '../constants';
 
 interface ControlsPanelProps {
@@ -8,6 +8,8 @@ interface ControlsPanelProps {
   setPrompt: (prompt: string) => void;
   selectedPlatform: Platform;
   setSelectedPlatform: (platform: Platform) => void;
+  adStyle: AdStyle;
+  setAdStyle: (style: AdStyle) => void;
   startImageFile: File | null;
   setStartImageFile: (file: File | null) => void;
   endImageFile: File | null;
@@ -57,6 +59,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   setPrompt,
   selectedPlatform,
   setSelectedPlatform,
+  adStyle,
+  setAdStyle,
   startImageFile,
   setStartImageFile,
   endImageFile,
@@ -66,6 +70,13 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   onGenerateSuggestions,
   isLoading,
 }) => {
+
+  const adStyles: { id: AdStyle, name: string }[] = [
+    { id: 'polished', name: 'Polished' },
+    { id: 'native_tiktok', name: 'Native TikTok' },
+    { id: 'ugc_testimonial', name: 'UGC/Testimonial' }
+  ];
+
   return (
     <div className="bg-[#252525]/50 p-6 border border-[#0FF4C6]/50 space-y-6">
       {/* --- Section 1: Creative Input --- */}
@@ -105,18 +116,38 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         </div>
       </div>
 
+      <div>
+        <label className="block text-sm font-bold text-white mb-2">3. Ad Style (Images Only)</label>
+        <div className="grid grid-cols-3 gap-2">
+          {adStyles.map((style) => (
+            <button
+              key={style.id}
+              onClick={() => setAdStyle(style.id)}
+              disabled={isLoading}
+              className={`p-2 transition-all duration-200 border-2 text-xs text-center text-white ${
+                adStyle === style.id
+                  ? 'bg-[#0FF4C6]/20 border-[#0FF4C6]'
+                  : 'bg-[#1e1e1e]/50 border-transparent hover:border-[#0FF4C6]'
+              }`}
+            >
+              {style.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <button
         onClick={onGenerateSuggestions}
         disabled={isLoading || !prompt}
         className="w-full bg-[#333333] text-[#0FF4C6] font-semibold py-2 px-4 hover:bg-[#404040] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        3. Generate Test Ideas
+        4. Generate Test Ideas
       </button>
       
       {/* --- Section 2: Final Generation --- */}
       <div className="space-y-6 pt-6 border-t border-[#0FF4C6]/50">
         <div className="space-y-4">
-            <p className="text-sm font-bold text-white">4. Video Controls (Optional)</p>
+            <p className="text-sm font-bold text-white">5. Video Controls (Optional)</p>
             <FileInput label="Start Image" file={startImageFile} setFile={setStartImageFile} disabled={isLoading} />
             <FileInput label="End Image" file={endImageFile} setFile={setEndImageFile} disabled={isLoading} />
         </div>
