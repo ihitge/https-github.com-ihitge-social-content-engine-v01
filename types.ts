@@ -17,4 +17,7 @@ export interface GenerationResult {
     url: string;
     platform: Platform;
     prompt: string;
+    hook?: string;
+    keyMessages?: string;
+    cta?: string;
 }

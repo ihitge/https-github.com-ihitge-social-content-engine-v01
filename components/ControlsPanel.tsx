@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { Platform, GenerationType } from '../types';
 import { PLATFORMS } from '../constants';
@@ -10,6 +9,12 @@ interface ControlsPanelProps {
   setSelectedPlatform: (platform: Platform) => void;
   prompt: string;
   setPrompt: (prompt: string) => void;
+  hook: string;
+  setHook: (hook: string) => void;
+  keyMessages: string;
+  setKeyMessages: (keyMessages: string) => void;
+  cta: string;
+  setCta: (cta: string) => void;
   onFileChange: (file: File | null, type: 'start' | 'end') => void;
   onGenerate: () => void;
   isLoading: boolean;
@@ -41,8 +46,32 @@ const FileInput: React.FC<{ label: string; file: File | null; onChange: (file: F
     );
 };
 
+const TextInput: React.FC<{label: string, value: string, onChange: (val: string) => void, placeholder: string, rows?: number}> = ({ label, value, onChange, placeholder, rows = 1 }) => (
+    <div>
+        <label className="text-sm font-medium text-gray-400">{label}</label>
+        {rows > 1 ? (
+             <textarea
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className="mt-1 w-full p-2 bg-gray-900/50 border border-gray-700 rounded-md text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+                rows={rows}
+            />
+        ) : (
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className="mt-1 w-full p-2 bg-gray-900/50 border border-gray-700 rounded-md text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+            />
+        )}
+    </div>
+);
+
+
 export const ControlsPanel: React.FC<ControlsPanelProps> = ({
-  generationType, setGenerationType, selectedPlatform, setSelectedPlatform, prompt, setPrompt, onFileChange, onGenerate, isLoading, startImageFile, endImageFile, apiKeyMessage
+  generationType, setGenerationType, selectedPlatform, setSelectedPlatform, prompt, setPrompt, hook, setHook, keyMessages, setKeyMessages, cta, setCta, onFileChange, onGenerate, isLoading, startImageFile, endImageFile, apiKeyMessage
 }) => {
   return (
     <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50 space-y-6 h-full flex flex-col">
@@ -66,14 +95,33 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         </div>
       </div>
 
-      <div className="space-y-2 flex-grow flex flex-col">
-        <h3 className="font-bold text-lg text-white">3. Creative Prompt</h3>
-        <textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="e.g., A robot holding a red skateboard in a futuristic city"
-          className="w-full flex-grow p-3 bg-gray-900/50 border border-gray-700 rounded-md text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
-          rows={5}
+      <div className="space-y-4 flex-grow flex flex-col">
+        <h3 className="font-bold text-lg text-white">3. Creative Input</h3>
+        <TextInput
+            label="Visual Prompt"
+            value={prompt}
+            onChange={setPrompt}
+            placeholder="e.g., A robot holding a red skateboard"
+            rows={3}
+        />
+         <TextInput
+            label="Hook (Headline)"
+            value={hook}
+            onChange={setHook}
+            placeholder="e.g., The Future is Now"
+        />
+         <TextInput
+            label="Key Messages (Body)"
+            value={keyMessages}
+            onChange={setKeyMessages}
+            placeholder="e.g., Skate with AI\nAvailable tomorrow"
+            rows={2}
+        />
+         <TextInput
+            label="Call to Action (CTA)"
+            value={cta}
+            onChange={setCta}
+            placeholder="e.g., Shop Now"
         />
       </div>
 
@@ -92,7 +140,7 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
           className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-bold py-3 px-4 rounded-md hover:from-purple-600 hover:to-cyan-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isLoading ? (
-            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>

@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import type { Platform, GenerationResult } from '../types';
 
 interface PreviewProps {
@@ -10,20 +9,25 @@ interface PreviewProps {
   generatedContent: GenerationResult | null;
 }
 
+// FIX: This component was not correctly setting a height, causing the image to be invisible.
+// It has been updated to use the modern CSS `aspect-ratio` property to correctly size the container.
 const AspectRatioContainer: React.FC<{ aspectRatio: string; children: React.ReactNode }> = ({ aspectRatio, children }) => {
-  const [w, h] = aspectRatio.split(':').map(Number);
-  const paddingTop = `${(h / w) * 100}%`;
-
+  const [w, h] = aspectRatio.split(':');
+  
   return (
-    <div className="w-full relative bg-gray-900 rounded-lg overflow-hidden" style={{ paddingTop }}>
-      <div className="absolute inset-0 flex items-center justify-center">
-        {children}
-      </div>
+    <div 
+      className="w-full bg-gray-900 rounded-lg overflow-hidden border border-gray-700 flex items-center justify-center"
+      style={{ aspectRatio: `${w} / ${h}` }}
+    >
+      {children}
     </div>
   );
 };
 
+
 export const Preview: React.FC<PreviewProps> = ({ platform, isLoading, loadingMessage, error, generatedContent }) => {
+  const [copySuccess, setCopySuccess] = useState('');
+
   const handleDownload = () => {
     if (!generatedContent) return;
     const link = document.createElement('a');
@@ -34,6 +38,19 @@ export const Preview: React.FC<PreviewProps> = ({ platform, isLoading, loadingMe
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleCopyCaptions = () => {
+    if (!generatedContent) return;
+    const { hook, keyMessages, cta } = generatedContent;
+    const captionText = [hook, keyMessages, cta].filter(Boolean).join('\n\n');
+    navigator.clipboard.writeText(captionText).then(() => {
+        setCopySuccess('Copied!');
+        setTimeout(() => setCopySuccess(''), 2000);
+    }, () => {
+        setCopySuccess('Failed to copy.');
+        setTimeout(() => setCopySuccess(''), 2000);
+    });
   };
     
   const renderContent = () => {
@@ -68,10 +85,12 @@ export const Preview: React.FC<PreviewProps> = ({ platform, isLoading, loadingMe
     return (
       <div className="text-center text-gray-500 p-4">
         <p className="font-semibold">Your generated content will appear here</p>
-        <p className="text-sm">Select a platform, type a prompt, and click "Generate"</p>
+        <p className="text-sm">Fill out the creative inputs and click "Generate"</p>
       </div>
     );
   };
+
+  const hasCaptions = generatedContent && (generatedContent.hook || generatedContent.keyMessages || generatedContent.cta);
 
   return (
     <div className="flex flex-col h-full space-y-4">
@@ -82,6 +101,20 @@ export const Preview: React.FC<PreviewProps> = ({ platform, isLoading, loadingMe
            </AspectRatioContainer>
         </div>
       </div>
+      {generatedContent && generatedContent.type === 'video' && hasCaptions && (
+        <div className="p-4 bg-gray-800 rounded-lg border border-gray-700 space-y-3">
+            <h4 className="font-bold text-white">Video Captions</h4>
+            {generatedContent.hook && <p className="text-sm text-gray-300"><strong>Hook:</strong> {generatedContent.hook}</p>}
+            {generatedContent.keyMessages && <p className="text-sm text-gray-300 whitespace-pre-wrap"><strong>Messages:</strong> {generatedContent.keyMessages}</p>}
+            {generatedContent.cta && <p className="text-sm text-gray-300"><strong>CTA:</strong> {generatedContent.cta}</p>}
+             <button
+                onClick={handleCopyCaptions}
+                className="w-full mt-2 bg-gray-700 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-600 transition-colors text-sm"
+            >
+                {copySuccess || 'Copy Captions'}
+            </button>
+        </div>
+      )}
       {generatedContent && !isLoading && (
         <button
           onClick={handleDownload}
@@ -90,7 +123,7 @@ export const Preview: React.FC<PreviewProps> = ({ platform, isLoading, loadingMe
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
-          Download
+          Download Content
         </button>
       )}
     </div>

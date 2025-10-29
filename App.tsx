@@ -1,15 +1,11 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { ControlsPanel } from './components/ControlsPanel';
 import { Preview } from './components/Preview';
 import { SuggestionsPanel } from './components/SuggestionsPanel';
 import { PLATFORMS } from './constants';
 import { generateImage, generateVideo } from './services/geminiService';
-import { fileToBase64 } from './utils/fileUtils';
+import { fileToBase64, addTextOverlayToImage } from './utils/fileUtils';
 import type { Platform, GenerationType, GenerationResult } from './types';
-
-// Fix: Removed conflicting global declaration for `window.aistudio`.
-// The environment provides this, and re-declaring it causes an error.
 
 const App: React.FC = () => {
   const [generationType, setGenerationType] = useState<GenerationType>('image');
@@ -17,6 +13,11 @@ const App: React.FC = () => {
   const [prompt, setPrompt] = useState<string>('');
   const [startImage, setStartImage] = useState<{ file: File; base64: string; } | null>(null);
   const [endImage, setEndImage] = useState<{ file: File; base64: string; } | null>(null);
+  
+  // State for text overlays
+  const [hook, setHook] = useState('');
+  const [keyMessages, setKeyMessages] = useState('');
+  const [cta, setCta] = useState('');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>('');
@@ -26,16 +27,16 @@ const App: React.FC = () => {
   const [apiKeySelected, setApiKeySelected] = useState<boolean>(false);
   const [apiKeyMessage, setApiKeyMessage] = useState<string | null>(null);
 
-  const checkApiKey = useCallback(async () => {
-    if (window.aistudio) {
+  const checkApiKeyOnLoad = useCallback(async () => {
+    if (generationType === 'video' && window.aistudio) {
       const hasKey = await window.aistudio.hasSelectedApiKey();
       setApiKeySelected(hasKey);
     }
-  }, []);
+  }, [generationType]);
 
   useEffect(() => {
-    checkApiKey();
-  }, [checkApiKey]);
+    checkApiKeyOnLoad();
+  }, [checkApiKeyOnLoad]);
 
   const handleFileChange = async (file: File | null, type: 'start' | 'end') => {
     if (file) {
@@ -59,22 +60,33 @@ const App: React.FC = () => {
     setApiKeyMessage(null);
 
     if (!prompt) {
-      setError("Please enter a prompt.");
+      setError("Please enter a visual prompt.");
       return;
     }
-    
+
     if (generationType === 'video') {
-      await checkApiKey();
-      if (!apiKeySelected) {
-         if (window.aistudio) {
-          await window.aistudio.openSelectKey();
-          setApiKeySelected(true); // Optimistically set to true
-          setApiKeyMessage("API Key selected. You can now generate your video!");
-        } else {
-            setError("Video generation API is not available.");
+        let hasKey = apiKeySelected;
+        if (!hasKey && window.aistudio) {
+            hasKey = await window.aistudio.hasSelectedApiKey();
+            if (!hasKey) {
+                try {
+                    await window.aistudio.openSelectKey();
+                    hasKey = await window.aistudio.hasSelectedApiKey();
+                } catch (e) {
+                    console.error("Error opening API key selector:", e);
+                    setError("Could not open the API key selector.");
+                    return;
+                }
+            }
         }
-        return;
-      }
+        
+        if (!hasKey) {
+            setError("An API Key is required for video generation. Please select a key and try again.");
+            setApiKeySelected(false);
+            return;
+        }
+        
+        setApiKeySelected(true);
     }
 
     setIsLoading(true);
@@ -82,10 +94,20 @@ const App: React.FC = () => {
 
     try {
       let resultUrl: string;
+      const textOverlays = { hook, keyMessages, cta };
+
       if (generationType === 'image') {
         setLoadingMessage('Generating your image...');
         const base64Image = await generateImage(prompt, platform.aspectRatio);
-        resultUrl = `data:image/jpeg;base64,${base64Image}`;
+        const base64ImageUrl = `data:image/jpeg;base64,${base64Image}`;
+        
+        if (hook || keyMessages || cta) {
+          setLoadingMessage('Adding text overlays...');
+          resultUrl = await addTextOverlayToImage(base64ImageUrl, textOverlays);
+        } else {
+          resultUrl = base64ImageUrl;
+        }
+
       } else { // video
         setLoadingMessage('Initializing video generation...');
         const videoUri = await generateVideo({
@@ -100,7 +122,9 @@ const App: React.FC = () => {
         const blob = await response.blob();
         resultUrl = URL.createObjectURL(blob);
       }
-      setGeneratedContent({ type: generationType, url: resultUrl, platform, prompt });
+
+      setGeneratedContent({ type: generationType, url: resultUrl, platform, prompt, ...textOverlays });
+
     } catch (e: any) {
       const errorMessage = e.message || 'An unknown error occurred.';
       setError(errorMessage);
@@ -112,7 +136,7 @@ const App: React.FC = () => {
       setIsLoading(false);
       setLoadingMessage('');
     }
-  }, [prompt, generationType, selectedPlatform, startImage, endImage, apiKeySelected, checkApiKey]);
+  }, [prompt, generationType, selectedPlatform, startImage, endImage, apiKeySelected, hook, keyMessages, cta]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
@@ -135,6 +159,12 @@ const App: React.FC = () => {
               setSelectedPlatform={setSelectedPlatform}
               prompt={prompt}
               setPrompt={setPrompt}
+              hook={hook}
+              setHook={setHook}
+              keyMessages={keyMessages}
+              setKeyMessages={setKeyMessages}
+              cta={cta}
+              setCta={setCta}
               onFileChange={handleFileChange}
               onGenerate={() => handleGenerate(selectedPlatform)}
               isLoading={isLoading}
