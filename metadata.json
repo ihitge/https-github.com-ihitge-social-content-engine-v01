@@ -1,0 +1,5 @@
+{
+  "name": "Social Media Content Factory",
+  "description": "Generate social media shorts and images for various platforms using AI. Provide a prompt or starting/ending images to create content tailored for YouTube Shorts, TikTok, Instagram, and more, complete with campaign scaling features.",
+  "requestFramePermissions": []
+}
