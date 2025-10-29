@@ -1,4 +1,4 @@
-# Social Media Content Factory - User Guide
+# AI Social Media Ad Generator - User Guide
 
 Welcome to the AI Social Media Ad Generator! This guide will walk you through creating compelling, platform-native ads in just a few clicks.
 
@@ -39,7 +39,7 @@ Select the social media platform you're creating the ad for (e.g., TikTok, Insta
 
 ### Step 3: Generate and Edit Creative Suggestions
 
-Click the **"New Ideas"** button. The AI will generate three complete ad concepts for you, each with:
+Click the **"Generate Test Ideas"** button. The AI will generate three complete ad concepts for you, each with:
 *   **Hook:** A catchy headline to grab attention.
 *   **Key Messages:** The main body text of your ad.
 *   **CTA (Call to Action):** What you want the user to do (e.g., "Shop Now," "Learn More").
@@ -57,7 +57,7 @@ The results will appear in the main content area. You can hover over each one to
 ## Feature Deep Dive
 
 ### Creative Suggestions
-This panel is your AI marketing assistant. Use the "New Ideas" button to brainstorm, then refine the text in the cards to get it just right. The generated content will always use the three suggestions currently displayed and edited by you.
+This panel is your AI marketing assistant. Use the "Generate Test Ideas" button to brainstorm, then refine the text in the cards to get it just right. The generated content will always use the three suggestions currently displayed and edited by you.
 
 ### Video Generation Controls
 You can optionally provide a **Start Image** and/or an **End Image** for video generation. This gives you more control over the final video, allowing you to create "Midjourney-style" transformations.
